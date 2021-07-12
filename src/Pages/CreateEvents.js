@@ -35,7 +35,9 @@ const CreateEvents = (props) => {
     const handleForms=async(event)=>{
         event.preventDefault();
         const {eventName, eventDesc, startDate, startTime, endDate, endTime, location, price, images} = event.target.elements;
-        const data = {eventName:eventName.value,eventDescription:eventDesc.value,eventStartDate:startDate.value,eventStartTime:startTime.value,eventEndDate:endDate.value,eventEndTime:endTime.value,location:location.value,eventPrice:price.value,eventImages:await convertFileToBase64(images.files)};
+        let images2 =await convertFileToBase64(images.files);
+        const data = {eventName:eventName.value,eventDescription:eventDesc.value,eventStartDate:startDate.value,eventStartTime:startTime.value,eventEndDate:endDate.value,eventEndTime:endTime.value,location:location.value,eventPrice:price.value,eventImages:images2};
+       
         if(props?.location?.state?.edit)
         {
             const params={events:query.get('card')};

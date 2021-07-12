@@ -17,9 +17,9 @@ const Account = () => {
         if(otp && otp.length===6 && emailOtp)
         {
             const otpData = {email:emailOtp,otp:otp};
-            postMethod('/api/v1/user/login', otpData).then(response => {
+            postMethod('/api/v1/user/verifyotp', otpData).then(response => {
                 if (response.success) {
-                    toast.success(response.message, {
+                    toast.success("Registered Successfully", {
                         position: "bottom-right",
                         autoClose: 5000,
                         hideProgressBar: true,
@@ -28,7 +28,7 @@ const Account = () => {
                         draggable: true,
                         progress: undefined,
                     })
-                    history.push('/login')
+                    history.push('/')
                 } else {
                     toast.error(response.error, {
                         position: "bottom-right",
