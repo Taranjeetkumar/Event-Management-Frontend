@@ -58,7 +58,7 @@ async function putMethod(path, data, params = {}) {
       if (!error.response || error.code === 'ECONNABORTED') {
         resolve({status:false,message:'error!'})
       }else{
-        resolve(error.response)
+        resolve(error.response.data)
       }
     })
   })

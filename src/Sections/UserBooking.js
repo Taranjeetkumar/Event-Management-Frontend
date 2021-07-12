@@ -80,7 +80,7 @@ const UserBooking = (props) => {
                                         itemUser === userActive ?
                                             <div className='col-md-4 col-12' key={index} style={{ marginTop: '25px', marginBottom: '25px' }}>
                                                 <Card style={{ width: '100%' }}>
-                                                    <Card.Img variant="top" src={item?.eventImages[0]} />
+                                                    <Card.Img variant="top" src={'https://taranjeet10.s3.amazonaws.com/'+item?.eventImages[0]} />
                                                     <Card.Body className='cardBody'>
                                                         <Card.Title>{item?.eventName}&nbsp;{item?.eventPrice ? '(Rs ' + item?.eventPrice + ')' : '(Free)'}</Card.Title>
                                                         <Card.Title className='colLittle'>{dateFormatConverter(item?.eventStartDate) + ' - ' + dateFormatConverter(item?.eventEndDate)}</Card.Title>

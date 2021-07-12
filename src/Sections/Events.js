@@ -20,19 +20,57 @@ const Events = (props) => {
         return returnDate;
     }
     const  handleBooked=async(value)=>{
+        // var rzp1 = new window.Razorpay(options);
+        // rzp1.open();
         let bookedData = {eventId:value};
         postMethod('/api/v1/booking/add',bookedData).then(response=>{
             if(response.success)
             {
-                toast.success('Event Successfully Booked!', {
-                    position: "bottom-right",
-                    onClose:()=>{setBookedStatus([...bookedStatus,{eventId:value,status:true}])},
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
+                const bookingId = {bookingId:response.data._id};
+                postMethod('/api/v1/payment/generateId',bookingId).then(response2=>{
+                    if(response2.success)
+                    {
+                        const orderId = response2.booking._id;
+                        const options = {
+                            key: 'rzp_test_d3fIdfEXIFhpGY',
+                            amount: response2.booking.eventId.eventPrice, //  = INR 1
+                            name: 'Razorpay',
+                            description: 'Razorpay',
+                            image: 'https://previews.123rf.com/images/subhanbaghirov/subhanbaghirov1605/subhanbaghirov160500087/56875269-vector-light-bulb-icon-with-concept-of-idea-brainstorming-idea-illustration-.jpg',
+                            handler: function(response3) {
+                                const orderConfirmed = {bookingId: orderId,paymentId:response3.razorpay_payment_id,status:'paid'}
+                                postMethod('/api/v1/payment/create',orderConfirmed).then(response4=>{
+                                    if(response4.success)
+                                    {
+                                        toast.success('Successfully Event Booked!', {
+                                            position: "bottom-right",
+                                            autoClose: 5000,
+                                            hideProgressBar: true,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true,
+                                            progress: undefined,
+                                        })
+                                    }else{
+                                        toast.error('Failed booking!', {
+                                            position: "bottom-right",
+                                            autoClose: 5000,
+                                            hideProgressBar: true,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true,
+                                            progress: undefined,
+                                        })
+                                    }
+                                })
+                            },
+                            theme: {
+                                "color": "#227254"
+                            }
+                        };
+                        var rzp1 = new window.Razorpay(options);
+                        rzp1.open();
+                    }
                 })
             }else{
                 toast.error(response.error, {
@@ -59,6 +97,10 @@ const Events = (props) => {
             //setUserActive
             setUserActive(response?._id)
         })
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.async = true;
+        document.body.appendChild(script);
         window.scrollTo(0, 0)
         return () => {
         }
@@ -78,7 +120,7 @@ const Events = (props) => {
                                 :
                                 <div className='col-md-4 col-12' key={index} style={{marginTop:'25px',marginBottom:'25px'}}>
                                     <Card style={{ width: '100%' }}>
-                                        <Card.Img variant="top" src={item?.eventImages[0]} />
+                                        <Card.Img variant="top" src={'https://taranjeet10.s3.amazonaws.com/'+item?.eventImages[0]} />
                                         <Card.Body className='cardBody'>
                                             <Card.Title>{item?.eventName}&nbsp;{item?.eventPrice?'(Rs '+item?.eventPrice+')':'(Free)'}</Card.Title>
                                             <Card.Title className='colLittle'>{dateFormatConverter(item?.eventStartDate) +' - '+dateFormatConverter(item?.eventEndDate)}</Card.Title>
@@ -152,4 +194,3 @@ const Events = (props) => {
     )
 }
 export default Events;
-//userActive
