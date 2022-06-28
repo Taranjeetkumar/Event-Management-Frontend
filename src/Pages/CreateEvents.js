@@ -70,6 +70,8 @@ const CreateEvents = (props) => {
                 }
             })
         } else {
+
+            console.log("Images : ",images);
             const formData = new FormData();
             formData.append('eventName', eventName);
             formData.append('eventDescription', eventDesc);
@@ -182,7 +184,7 @@ const CreateEvents = (props) => {
                                     </Form.Group>
                                     <Form.Group controlId="formGroupDescription">
                                         <Form.Label>Event Images</Form.Label>
-                                        <Form.Control type="file" name='images' placeholder="Event Images" value={images} onChange={(e) => setImages(e.target.files[0])} required />
+                                        <input type="file" name='images' placeholder="Event Images" onChange={(e) => setImages(e.target.files[0])} required />
                                     </Form.Group>
                                     <input type="submit" className='formbutton' value={props?.location?.state?.edit ? 'Edit Event' : 'Create Event'} onClick={(e) => handleForms(e)} />
                                 </Form>

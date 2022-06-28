@@ -33,7 +33,7 @@ const Events = (props) => {
                         const orderId = response2.booking._id;
                         const options = {
                             key: 'rzp_test_d3fIdfEXIFhpGY',
-                            amount: response2.booking.eventId.eventPrice, //  = INR 1
+                            amount: (Number(response2.booking.eventId.eventPrice) *100), //  = INR 1
                             name: 'Razorpay',
                             description: 'Razorpay',
                             image: 'https://previews.123rf.com/images/subhanbaghirov/subhanbaghirov1605/subhanbaghirov160500087/56875269-vector-light-bulb-icon-with-concept-of-idea-brainstorming-idea-illustration-.jpg',
